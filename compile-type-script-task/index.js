@@ -11,10 +11,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const task = require("vsts-task-lib/task");
 const path = require("path");
 function installTypeScript(taskPath) {
-    task.debug('entering task directory');
-    task.cd(taskPath);
     let npm = task.tool(task.which('npm', true));
-    npm.arg('install').arg('typescript');
+    npm.arg('install').arg('--prefix').arg(taskPath).arg('typescript');
     return npm.execSync();
 }
 function startCompilation(tsc, projectPath) {

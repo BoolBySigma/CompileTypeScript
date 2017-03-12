@@ -2,10 +2,8 @@ import * as task from 'vsts-task-lib/task';
 import * as path from 'path';
 
 function installTypeScript(taskPath: string) {
-    task.debug('entering task directory');
-    task.cd(taskPath);
     let npm = task.tool(task.which('npm', true));
-    npm.arg('install').arg('typescript');
+    npm.arg('install').arg('--prefix').arg(taskPath).arg('typescript');
     return npm.execSync();
 }
 
