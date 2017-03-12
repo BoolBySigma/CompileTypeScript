@@ -29,7 +29,7 @@ async function run() {
         let cwd = task.getPathInput('cwd', false, false);
         task.debug('cwd=' + cwd);
 
-        let tsc = path.join(__dirname, 'node_modules/typescript/bin/tsc');
+        let tsc = path.join(__dirname, 'compile-type-script-task/node_modules/typescript/bin/tsc');
         task.debug('tsc=' + tsc);
 
         task.cd(cwd);
