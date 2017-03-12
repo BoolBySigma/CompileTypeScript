@@ -19,9 +19,9 @@ function startCompilation(tsc, projectPath) {
     console.log('Starting compilation...');
     let result = compile(tsc, projectPath);
     task.debug('tsc exited with code: ' + result.code);
-    task.debug('tsc exited with error: ' + result.error);
-    task.debug('tsc exited with stderror: ' + result.stderr);
-    task.debug('tsc exited with stdout: ' + result.stdout);
+    if (result.error) {
+        task.debug('tsc exited with error: ' + result.error);
+    }
     if (result.code === 0) {
         console.log('Compilation completed');
     }
@@ -38,8 +38,6 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let cwd = task.getPathInput('cwd', false, false);
-            //cwd = path.join(__dirname, 'examples');
-            task.debug('cwd=' + cwd);
             let tsc = path.join(__dirname, '/node_modules/typescript/lib/tsc.js');
             task.debug('tsc=' + tsc);
             if (!task.exist(tsc)) {
@@ -53,12 +51,12 @@ function run() {
                     }
                     else {
                         task.debug('tsc not found after installation');
-                        throw new Error('TypeScript installation failed. Try to manually install TypeScript on the agent.');
+                        throw new Error('TypeScript installation failed');
                     }
                 }
                 else {
                     task.debug('typescript installation failed');
-                    throw new Error('TypeScript installation failed. Try to manually install TypeScript on the agent.');
+                    throw new Error('TypeScript installation failed');
                 }
             }
             else {
