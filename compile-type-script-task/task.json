@@ -28,9 +28,19 @@
         {
             "name": "projectPath",
             "type": "filePath",
-            "label": "Project Path",
+            "label": "Path",
             "defaultValue": "",
             "required": false,
+            "visibleRule": "compileType=1",
+            "helpMarkDown": "Path to a valid <code>tsconfig.json</code> file or directory containing the <code>tsconfig.json</code> file. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>."
+        },
+        {
+            "name": "files",
+            "type": "string",
+            "label": "Files",
+            "defaultValue": "index.ts",
+            "required": false,
+            "visibleRule": "compileType=2",
             "helpMarkDown": "Path to a valid <code>tsconfig.json</code> file or directory containing the <code>tsconfig.json</code> file. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>."
         }
     ],
