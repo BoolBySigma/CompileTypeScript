@@ -14,12 +14,12 @@
     "instanceNameFormat": "Compile TypeScript: $(cwd)",
     "inputs": [
         {
-            "name": "cwd",
+            "name": "projectPath",
             "type": "filePath",
-            "label": "Working Directory",
+            "label": "Project Path",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "The directory where to download the artifact. Must be an existing directory. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>."
+            "helpMarkDown": "Path to a valid <code>tsconfig.json</code> file or directory containing the <code>tsconfig.json</code> file. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>."
         }
     ],
     "execution": {

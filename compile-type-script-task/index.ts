@@ -30,7 +30,18 @@ function compile(tsc: string, projectPath: string) {
 
 async function run() {
     try {
-        let cwd = task.getPathInput('cwd', false, false);
+        let projectPath = task.getPathInput('projectPath', false, false);
+
+        if (!task.exist(projectPath)){
+            throw new Error('Project path does not exist. Specify a path to a valid tsconfig.json file or directory containing the tsconfig.json file.');
+        }
+
+        let stats = task.stats(projectPath);
+        if (stats.isFile){
+            if (!(path.basename(projectPath) === 'tsconfig.json')){
+                throw new Error('Project path \'' + projectPath + '\' is not a tsconfig.json file.');
+            }
+        }
 
         let tsc = path.join(__dirname, '/node_modules/typescript/lib/tsc.js');
         task.debug('tsc=' + tsc);
@@ -43,7 +54,7 @@ async function run() {
         if (result.code === 0) {
             if (task.exist(tsc)) {
                 console.log('TypeScript installation completed');
-                startCompilation(tsc, cwd);
+                startCompilation(tsc, projectPath);
             }
             else {
                 task.debug('tsc not found after installation');
