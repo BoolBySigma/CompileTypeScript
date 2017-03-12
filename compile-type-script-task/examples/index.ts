@@ -1,15 +1,15 @@
 import * as task from 'vsts-task-lib/task';
 import * as path from 'path';
 
+let npmPrefix = 'compile-type-script-task';
+
 function installTypeScript() {
     let npm = task.tool(task.which('npm', true));
-    npm.arg('install').arg('typescript');
+    npm.arg('install').arg('--prefix').arg(npmPrefix).arg('typescript');
     return npm.execSync();
 }
 
-function startCompilation(tsc: string, cwd: string) {
-    task.debug('entering working directory');
-    task.cd(cwd);
+function startCompilation(tsc) {
     console.log('Starting compilation...');
     let result = compile(tsc);
     task.debug('tsc exited with code: ' + result.code);
@@ -29,10 +29,13 @@ function compile(tsc) {
 async function run() {
     try {
         let cwd = task.getPathInput('cwd', false, false);
+        cwd = 'compile-type-script-task/tests';
         task.debug('cwd=' + cwd);
 
-        let tsc = path.join(__dirname, '/node_modules/typescript/bin/tsc');
+        let tsc = npmPrefix + '/node_modules/typescript/bin/tsc';
         task.debug('tsc=' + tsc);
+
+        task.cd(cwd);
 
         if (!task.exist(tsc)) {
             console.log('Starting TypeScript installation...');
@@ -43,7 +46,7 @@ async function run() {
             if (result.code === 0) {
                 if (task.exist(tsc)){
                     console.log('TypeScript installation completed');
-                    startCompilation(tsc, cwd);
+                    startCompilation(tsc);
                 }
                 else{
                     task.debug('tsc not found after installation');
@@ -56,7 +59,7 @@ async function run() {
             }
         }
         else {
-            startCompilation(tsc, cwd);
+            startCompilation(tsc);
         }
 
         task.setResult(task.TaskResult.Succeeded, 'TypeScript compiler completed successfully');

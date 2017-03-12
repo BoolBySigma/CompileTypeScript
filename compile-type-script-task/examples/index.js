@@ -9,15 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const task = require("vsts-task-lib/task");
-const path = require("path");
+let npmPrefix = 'compile-type-script-task';
 function installTypeScript() {
     let npm = task.tool(task.which('npm', true));
-    npm.arg('install').arg('typescript');
+    npm.arg('install').arg('--prefix').arg(npmPrefix).arg('typescript');
     return npm.execSync();
 }
-function startCompilation(tsc, cwd) {
-    task.debug('entering working directory');
-    task.cd(cwd);
+function startCompilation(tsc) {
     console.log('Starting compilation...');
     let result = compile(tsc);
     task.debug('tsc exited with code: ' + result.code);
@@ -36,10 +34,11 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let cwd = task.getPathInput('cwd', false, false);
-            cwd = 'examples';
+            cwd = 'compile-type-script-task/tests';
             task.debug('cwd=' + cwd);
-            let tsc = path.join(__dirname, '/node_modules/typescript/bin/tsc');
+            let tsc = npmPrefix + '/node_modules/typescript/bin/tsc';
             task.debug('tsc=' + tsc);
+            task.cd(cwd);
             if (!task.exist(tsc)) {
                 console.log('Starting TypeScript installation...');
                 let result = installTypeScript();
@@ -47,7 +46,7 @@ function run() {
                 if (result.code === 0) {
                     if (task.exist(tsc)) {
                         console.log('TypeScript installation completed');
-                        startCompilation(tsc, cwd);
+                        startCompilation(tsc);
                     }
                     else {
                         task.debug('tsc not found after installation');
@@ -60,7 +59,7 @@ function run() {
                 }
             }
             else {
-                startCompilation(tsc, cwd);
+                startCompilation(tsc);
             }
             task.setResult(task.TaskResult.Succeeded, 'TypeScript compiler completed successfully');
         }
