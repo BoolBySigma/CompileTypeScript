@@ -35,7 +35,7 @@ async function run() {
         let tsc = path.join(__dirname, '/node_modules/typescript/lib/tsc.js');
         task.debug('tsc=' + tsc);
 
-        if (!task.exist(tsc)) {
+        //if (!task.exist(tsc)) {
             console.log('Starting TypeScript installation...');
 
             let result = installTypeScript(__dirname);
@@ -55,10 +55,10 @@ async function run() {
                 task.debug('typescript installation failed');
                 throw new Error('TypeScript installation failed');
             }
-        }
+        /*}
         else {
             startCompilation(tsc, cwd);
-        }
+        }*/
 
         task.setResult(task.TaskResult.Succeeded, 'TypeScript compiler completed successfully');
     }
