@@ -21,6 +21,9 @@ function startCompilation(tsc, projectPath) {
     console.log('Starting compilation...');
     let result = compile(tsc, projectPath);
     task.debug('tsc exited with code: ' + result.code);
+    task.debug('tsc exited with error: ' + result.error);
+    task.debug('tsc exited with stderror: ' + result.stderr);
+    task.debug('tsc exited with stdout: ' + result.stdout);
     if (result.code === 0) {
         console.log('Compilation completed');
     }
