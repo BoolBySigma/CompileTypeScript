@@ -33,13 +33,18 @@ async function run() {
         let projectPath = task.getPathInput('projectPath', false, false);
 
         if (!task.exist(projectPath)){
-            throw new Error('Project path does not exist. Specify a path to a valid tsconfig.json file or directory containing the tsconfig.json file.');
+            throw new Error('Project path \'' + projectPath + '\' does not exist. Specify a path to a valid tsconfig.json file or directory containing the tsconfig.json file.');
         }
 
         let stats = task.stats(projectPath);
+        if (stats.isDirectory()){
+            if (!task.exist(path.join(projectPath, 'tsconfig.json'))){
+                throw new Error('Project path \'' + projectPath + '\' does not contain a tsconfig.json file. Specify a path to a valid tsconfig.json file or directory containing the tsconfig.json file.');
+            }
+        }
         if (stats.isFile()){
             if (!(path.basename(projectPath) === 'tsconfig.json')){
-                throw new Error('Project path \'' + projectPath + '\' is not a tsconfig.json file.');
+                throw new Error('Project path \'' + projectPath + '\' is not a tsconfig.json file. Specify a path to a valid tsconfig.json file or directory containing the tsconfig.json file.');
             }
         }
 
