@@ -32,17 +32,17 @@ function startCompilation(tsc, projectPath) {
     }
 }
 function compile(tsc, projectPath) {
-    task.cd(projectPath);
-    let compiler = task.tool(tsc);
-    //compiler.arg('-p').arg(projectPath);
+    let compiler = task.tool(task.which('node', true));
+    compiler.arg(tsc).arg('-p').arg(projectPath);
     return compiler.execSync();
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let cwd = task.getPathInput('cwd', false, false);
+            //cwd = path.join(__dirname, 'examples');
             task.debug('cwd=' + cwd);
-            let tsc = path.join(__dirname, '/node_modules/typescript/bin/tsc');
+            let tsc = path.join(__dirname, '/node_modules/typescript/lib/tsc.js');
             task.debug('tsc=' + tsc);
             if (!task.exist(tsc)) {
                 console.log('Starting TypeScript installation...');

@@ -25,19 +25,18 @@ function startCompilation(tsc: string, projectPath: string) {
 }
 
 function compile(tsc: string, projectPath: string) {
-    task.cd(projectPath);
-    let compiler = task.tool(tsc);
-    //compiler.arg('-p').arg(projectPath);
+    let compiler = task.tool(task.which('node', true));
+    compiler.arg(tsc).arg('-p').arg(projectPath);
     return compiler.execSync();
 }
-
 
 async function run() {
     try {
         let cwd = task.getPathInput('cwd', false, false);
+        //cwd = path.join(__dirname, 'examples');
         task.debug('cwd=' + cwd);
 
-        let tsc = path.join(__dirname, '/node_modules/typescript/bin/tsc');
+        let tsc = path.join(__dirname, '/node_modules/typescript/lib/tsc.js');
         task.debug('tsc=' + tsc);
 
         if (!task.exist(tsc)) {
