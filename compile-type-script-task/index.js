@@ -36,7 +36,6 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let cwd = task.getPathInput('cwd', false, false);
-            cwd = 'examples';
             task.debug('cwd=' + cwd);
             let tsc = path.join(__dirname, '/node_modules/typescript/bin/tsc');
             task.debug('tsc=' + tsc);

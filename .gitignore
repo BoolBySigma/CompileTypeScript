@@ -1,3 +1,4 @@
 node_modules
 *.log
 .taskkey
+/compile-type-script-task/examples/*.js
