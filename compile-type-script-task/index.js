@@ -10,18 +10,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const task = require("vsts-task-lib/task");
 const path = require("path");
-function installTypeScript(npmPath) {
+function installTypeScript(taskPath) {
     task.debug('entering task directory');
-    task.cd(npmPath);
+    task.cd(taskPath);
     let npm = task.tool(task.which('npm', true));
     npm.arg('install').arg('typescript');
     return npm.execSync();
 }
-function startCompilation(tsc, cwd) {
-    task.debug('entering working directory');
-    task.cd(cwd);
+function startCompilation(tsc, projectPath) {
     console.log('Starting compilation...');
-    let result = compile(tsc);
+    let result = compile(tsc, projectPath);
     task.debug('tsc exited with code: ' + result.code);
     if (result.code === 0) {
         console.log('Compilation completed');
@@ -30,8 +28,9 @@ function startCompilation(tsc, cwd) {
         throw new Error('Compilation failed');
     }
 }
-function compile(tsc) {
+function compile(tsc, projectPath) {
     let compiler = task.tool(tsc);
+    compiler.arg('-p').arg(projectPath);
     return compiler.execSync();
 }
 function run() {

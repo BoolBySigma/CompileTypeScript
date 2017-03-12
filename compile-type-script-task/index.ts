@@ -1,19 +1,17 @@
 import * as task from 'vsts-task-lib/task';
 import * as path from 'path';
 
-function installTypeScript(npmPath: string) {
+function installTypeScript(taskPath: string) {
     task.debug('entering task directory');
-    task.cd(npmPath);
+    task.cd(taskPath);
     let npm = task.tool(task.which('npm', true));
     npm.arg('install').arg('typescript');
     return npm.execSync();
 }
 
-function startCompilation(tsc: string, cwd: string) {
-    task.debug('entering working directory');
-    task.cd(cwd);
+function startCompilation(tsc: string, projectPath: string) {
     console.log('Starting compilation...');
-    let result = compile(tsc);
+    let result = compile(tsc, projectPath);
     task.debug('tsc exited with code: ' + result.code);
     if (result.code === 0) {
         console.log('Compilation completed');
@@ -23,8 +21,9 @@ function startCompilation(tsc: string, cwd: string) {
     }
 }
 
-function compile(tsc) {
+function compile(tsc: string, projectPath: string) {
     let compiler = task.tool(tsc);
+    compiler.arg('-p').arg(projectPath);
     return compiler.execSync();
 }
 
