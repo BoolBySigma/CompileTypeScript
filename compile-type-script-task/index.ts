@@ -1,7 +1,9 @@
 import * as task from 'vsts-task-lib/task';
 import * as path from 'path';
 
-function installTypeScript() {
+function installTypeScript(npmPath: string) {
+    task.debug('entering task directory');
+    task.cd(npmPath);
     let npm = task.tool(task.which('npm', true));
     npm.arg('install').arg('typescript');
     return npm.execSync();
@@ -28,7 +30,7 @@ function compile(tsc) {
 
 async function run() {
     try {
-        let cwd = task.getPathInput('cwd', false, false);
+        let cwd = path.join(process.env['BUILD_SOURCESDIRECTORY'], task.getPathInput('cwd', false, false));
         task.debug('cwd=' + cwd);
 
         let tsc = path.join(__dirname, '/node_modules/typescript/bin/tsc');
@@ -37,7 +39,7 @@ async function run() {
         if (!task.exist(tsc)) {
             console.log('Starting TypeScript installation...');
 
-            let result = installTypeScript();
+            let result = installTypeScript(__dirname);
             task.debug('npm install typescript exited with code: ' + result.code);
 
             if (result.code === 0) {

@@ -10,7 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const task = require("vsts-task-lib/task");
 const path = require("path");
-function installTypeScript() {
+function installTypeScript(npmPath) {
+    task.debug('entering task directory');
+    task.cd(npmPath);
     let npm = task.tool(task.which('npm', true));
     npm.arg('install').arg('typescript');
     return npm.execSync();
@@ -35,13 +37,13 @@ function compile(tsc) {
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let cwd = task.getPathInput('cwd', false, false);
+            let cwd = path.join(process.env['BUILD_SOURCESDIRECTORY'], task.getPathInput('cwd', false, false));
             task.debug('cwd=' + cwd);
             let tsc = path.join(__dirname, '/node_modules/typescript/bin/tsc');
             task.debug('tsc=' + tsc);
             if (!task.exist(tsc)) {
                 console.log('Starting TypeScript installation...');
-                let result = installTypeScript();
+                let result = installTypeScript(__dirname);
                 task.debug('npm install typescript exited with code: ' + result.code);
                 if (result.code === 0) {
                     if (task.exist(tsc)) {
