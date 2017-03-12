@@ -14,6 +14,18 @@
     "instanceNameFormat": "Compile TypeScript: $(cwd)",
     "inputs": [
         {
+            "name": "compileType",
+            "type": "pickList",
+            "label": "Compile",
+            "defaultValue": "1",
+            "options": {
+                "1": "Project",
+                "2": "Files"
+            },
+            "required": true,
+            "helpMarkDown": "Path to a valid <code>tsconfig.json</code> file or directory containing the <code>tsconfig.json</code> file. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>."
+        },
+        {
             "name": "projectPath",
             "type": "filePath",
             "label": "Project Path",
