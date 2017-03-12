@@ -1,0 +1,31 @@
+{
+    "id": "3933420c-5028-40d7-9eae-2f17f5484e17",
+    "name": "compile-type-script",
+    "friendlyName": "Compile TypeScript",
+    "description": "Compile TypeScript",
+    "helpMarkDown": "Having Problems? Please <a href='https://github.com/BoolBySigma/FetchBuildArtifact/issues' target='_blank'>create an issue on our Github</a> and we will try to help you.",
+    "category": "Utility",
+    "author": "Bool (by Sigma)",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 1
+    },
+    "instanceNameFormat": "Compile TypeScript: $(cwd)",
+    "inputs": [
+        {
+            "name": "cwd",
+            "type": "filePath",
+            "label": "Working Directory",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The directory where to download the artifact. Must be an existing directory. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>."
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js",
+            "argumentFormat": ""
+        }
+    }
+}

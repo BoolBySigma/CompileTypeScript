@@ -1,0 +1,54 @@
+{
+    "manifestVersion": 1,
+    "id": "compile-type-script",
+    "name": "Compile TypeScript",
+    "version": "0.0.1",
+    "publisher": "bool",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "Compile TypeScript projects and files",
+    "categories": [
+        "Build and release"
+    ],
+    "tags": [
+        "Artifact", "Utility task", "Build", "Continuous Integration"
+    ],
+    "icons": {
+        "default": "icon-128.png",
+        "large": "icon-512.png"
+    },
+    "content": {
+        "details": {
+            "path": "overview.md"
+        }
+    },
+    "links": {
+        "support": {
+            "uri": "https://github.com/BoolBySigma/FetchBuildArtifact/issues"
+        }
+    },
+    "files": [
+        {
+            "path": "compile-type-script-task"
+        },
+        {
+            "path": "images",
+            "addressable": true
+        }
+    ],
+    "contributions": [
+        {
+            "id": "compile-type-script-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "compile-type-script-task"
+            }
+        }
+    ]
+}

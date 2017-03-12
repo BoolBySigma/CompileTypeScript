@@ -1,0 +1,17 @@
+{
+  "name": "compile-type-script-task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vsts-task-lib": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.8"
+  }
+}
