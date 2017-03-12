@@ -35,7 +35,7 @@ function compile(tsc, projectPath) {
     task.cd(projectPath);
     let compiler = task.tool(tsc);
     //compiler.arg('-p').arg(projectPath);
-    return compiler.exec();
+    return compiler.execSync();
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
