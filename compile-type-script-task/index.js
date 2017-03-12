@@ -10,6 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const task = require("vsts-task-lib/task");
 const path = require("path");
+let tsc = task.which('tsc', false);
+console.log(tsc);
 function installTypeScript(taskPath) {
     task.debug('entering task directory');
     task.cd(taskPath);
@@ -73,4 +75,4 @@ function run() {
         }
     });
 }
-run();
+//run(); 

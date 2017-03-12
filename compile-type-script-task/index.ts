@@ -1,6 +1,9 @@
 import * as task from 'vsts-task-lib/task';
 import * as path from 'path';
 
+let tsc = task.which('tsc', false);
+console.log(tsc);
+
 function installTypeScript(taskPath: string) {
     task.debug('entering task directory');
     task.cd(taskPath);
@@ -72,4 +75,4 @@ async function run() {
     }
 }
 
-run();
+//run();
