@@ -17,6 +17,26 @@ function installTypeScript(taskPath) {
     npm.arg('install').arg('typescript');
     return npm.execSync();
 }
+/*function startCompilation(tsc: string, projectPath: string) {
+    console.log('Starting compilation...');
+    let result = compile(tsc, projectPath);
+    task.debug('tsc exited with code: ' + result.code);
+    task.debug('tsc exited with error: ' + result.error);
+    task.debug('tsc exited with stderror: ' + result.stderr);
+    task.debug('tsc exited with stdout: ' + result.stdout);
+    if (result.code === 0) {
+        console.log('Compilation completed');
+    }
+    else {
+        throw new Error('Compilation failed');
+    }
+}
+
+function compile(tsc: string, projectPath: string) {
+    let compiler = task.tool(tsc);
+    compiler.arg('-p').arg(projectPath);
+    return compiler.execSync();
+}*/
 function startCompilation(tsc, projectPath) {
     console.log('Starting compilation...');
     let result = compile(tsc, projectPath);
@@ -34,7 +54,7 @@ function startCompilation(tsc, projectPath) {
 function compile(tsc, projectPath) {
     let compiler = task.tool(tsc);
     compiler.arg('-p').arg(projectPath);
-    return compiler.execSync();
+    return compiler.exec();
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -50,7 +70,10 @@ function run() {
                 if (result.code === 0) {
                     if (task.exist(tsc)) {
                         console.log('TypeScript installation completed');
-                        startCompilation(tsc, cwd);
+                        //startCompilation(tsc, cwd);
+                        compile(tsc, cwd).then(function () {
+                            task.setResult(task.TaskResult.Succeeded, 'TypeScript compiler completed successfully');
+                        });
                     }
                     else {
                         task.debug('tsc not found after installation');
@@ -63,9 +86,11 @@ function run() {
                 }
             }
             else {
-                startCompilation(tsc, cwd);
+                compile(tsc, cwd).then(function () {
+                    task.setResult(task.TaskResult.Succeeded, 'TypeScript compiler completed successfully');
+                });
             }
-            task.setResult(task.TaskResult.Succeeded, 'TypeScript compiler completed successfully');
+            //task.setResult(task.TaskResult.Succeeded, 'TypeScript compiler completed successfully');
         }
         catch (error) {
             task.setResult(task.TaskResult.Failed, error.message);
