@@ -9,19 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const task = require("vsts-task-lib/task");
+const path = require("path");
 function installTypeScript() {
     let npm = task.tool(task.which('npm', true));
-    npm.arg('install').arg('-g').line('typescript');
+    npm.arg('install').line('typescript');
     return npm.execSync();
 }
 function startCompilation(tsc) {
     console.log('Starting compilation...');
     let result = compile(tsc);
+    task.debug('tsc exited with code: ' + result.code);
     if (result.code === 0) {
         console.log('Compilation completed');
     }
     else {
-        task.error(result.error.message);
         throw new Error('Compilation failed');
     }
 }
@@ -33,22 +34,20 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let cwd = task.getPathInput('cwd', false, false);
+            task.debug('cwd=' + cwd);
+            let tsc = path.join(__dirname, 'node_modules/typescript/bin/tsc');
+            task.debug('tsc=' + tsc);
             task.cd(cwd);
-            let tsc = task.which('tsc', false);
             if (!task.exist(tsc)) {
-                task.debug('tsc not installed');
-                task.debug('installing typescript');
-                task.warning('TypeScript is not installed');
                 console.log('Starting TypeScript installation...');
-                let installResult = installTypeScript();
-                if (installResult.code === 0) {
-                    task.debug('typescript installation completed');
-                    try {
-                        tsc = task.which('tsc', true);
+                let result = installTypeScript();
+                task.debug('npm install typescript exited with code: ' + result.code);
+                if (result.code === 0) {
+                    if (task.exist(tsc)) {
                         console.log('TypeScript installation completed');
                         startCompilation(tsc);
                     }
-                    catch (installError) {
+                    else {
                         task.debug('tsc not found after installation');
                         throw new Error('TypeScript installation failed. Try to manually install TypeScript on the agent.');
                     }
