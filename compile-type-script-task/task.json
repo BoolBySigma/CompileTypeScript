@@ -4,7 +4,7 @@
     "friendlyName": "Compile TypeScript",
     "description": "Compile TypeScript",
     "helpMarkDown": "Having Problems? Please <a href='https://github.com/BoolBySigma/FetchBuildArtifact/issues' target='_blank'>create an issue on our Github</a> and we will try to help you.",
-    "category": "Utility",
+    "category": "Build",
     "author": "Bool (by Sigma)",
     "version": {
         "Major": 0,

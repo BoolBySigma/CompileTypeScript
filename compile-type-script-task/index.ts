@@ -11,7 +11,7 @@ function startCompilation(tsc: string, projectPath: string) {
     console.log('Starting compilation...');
     let result = compile(tsc, projectPath);
     task.debug('tsc exited with code: ' + result.code);
-    if (result.error){
+    if (result.error) {
         task.debug('tsc exited with error: ' + result.error);
     }
     if (result.code === 0) {
@@ -35,30 +35,25 @@ async function run() {
         let tsc = path.join(__dirname, '/node_modules/typescript/lib/tsc.js');
         task.debug('tsc=' + tsc);
 
-        //if (!task.exist(tsc)) {
-            console.log('Starting TypeScript installation...');
+        console.log('Starting TypeScript installation...');
 
-            let result = installTypeScript(__dirname);
-            task.debug('npm install typescript exited with code: ' + result.code);
+        let result = installTypeScript(__dirname);
+        task.debug('npm install typescript exited with code: ' + result.code);
 
-            if (result.code === 0) {
-                if (task.exist(tsc)) {
-                    console.log('TypeScript installation completed');
-                    startCompilation(tsc, cwd);
-                }
-                else {
-                    task.debug('tsc not found after installation');
-                    throw new Error('TypeScript installation failed');
-                }
+        if (result.code === 0) {
+            if (task.exist(tsc)) {
+                console.log('TypeScript installation completed');
+                startCompilation(tsc, cwd);
             }
             else {
-                task.debug('typescript installation failed');
+                task.debug('tsc not found after installation');
                 throw new Error('TypeScript installation failed');
             }
-        /*}
+        }
         else {
-            startCompilation(tsc, cwd);
-        }*/
+            task.debug('typescript installation failed');
+            throw new Error('TypeScript installation failed');
+        }
 
         task.setResult(task.TaskResult.Succeeded, 'TypeScript compiler completed successfully');
     }
