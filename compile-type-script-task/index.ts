@@ -46,8 +46,9 @@ function startCompilation(tsc: string, projectPath: string) {
 }
 
 function compile(tsc: string, projectPath: string) {
+    task.cd(projectPath);
     let compiler = task.tool(tsc);
-    compiler.arg('-p').arg(projectPath);
+    //compiler.arg('-p').arg(projectPath);
     return compiler.exec();
 }
 

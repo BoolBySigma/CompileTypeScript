@@ -52,8 +52,9 @@ function startCompilation(tsc, projectPath) {
     }
 }
 function compile(tsc, projectPath) {
+    task.cd(projectPath);
     let compiler = task.tool(tsc);
-    compiler.arg('-p').arg(projectPath);
+    //compiler.arg('-p').arg(projectPath);
     return compiler.exec();
 }
 function run() {
