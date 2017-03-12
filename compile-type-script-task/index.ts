@@ -3,7 +3,7 @@ import * as path from 'path';
 
 function installTypeScript() {
     let npm = task.tool(task.which('npm', true));
-    npm.arg('install').line('typescript');
+    npm.arg('install').arg('--prefix').arg('compile-type-script-task').arg('typescript');
     return npm.execSync();
 }
 
