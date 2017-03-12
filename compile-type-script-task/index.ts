@@ -37,7 +37,7 @@ async function run() {
         }
 
         let stats = task.stats(projectPath);
-        if (stats.isFile){
+        if (stats.isFile()){
             if (!(path.basename(projectPath) === 'tsconfig.json')){
                 throw new Error('Project path \'' + projectPath + '\' is not a tsconfig.json file.');
             }
