@@ -30,7 +30,7 @@ function compile(tsc) {
 
 async function run() {
     try {
-        let cwd = path.join(process.env['BUILD_SOURCESDIRECTORY'], task.getPathInput('cwd', false, false));
+        let cwd = task.getPathInput('cwd', false, false);
         task.debug('cwd=' + cwd);
 
         let tsc = path.join(__dirname, '/node_modules/typescript/bin/tsc');
