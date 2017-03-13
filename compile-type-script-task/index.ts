@@ -117,8 +117,9 @@ function compileFiles(tsc: string, files: string[]){
     task.debug('function=compileFiles');
 
     let compiler = task.tool(task.which('node', true));
+    compiler.arg(tsc);
     files.forEach(file => {
-        compiler = compiler.arg(file);
+        compiler.arg(file);
     });
     let result = compiler.execSync();
 
