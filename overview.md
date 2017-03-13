@@ -1,25 +1,21 @@
-# Fetch Build Artifacts
-Fetch build artifacts from any project and build definition.
-
-## Note
-This task requires **Allow Scripts to Access OAuth Token** to be **enabled**.
+# Compile TypeScript
+Compile TypeScript projects and files.
 
 ## Usage
-Add a new **Fetch Build Artifacts** task from the **Utility** category...
+Add a new **Compile TypeScript** task from the **Build** category...
 
 ![Task](images/task.png)
 
 ...and configure it as needed.
 
-![Parameters](images/screenshot.png)
+![Parameters](images/parameters_project.png)
+![Parameters](images/parameters_files.png)
 Parameters include:
-* **Project**: Project from where to fetch the build artifact. Leaving it blank defaults to the current project and is equal to using <code>$(System.TeamProject)</code>.
-* **Build Definition Id**: Id of build definition from where to fetch build artifact. Must be a valid numerical value, eg. '12', and an existing build definition.
-* **Build Artifact Name**: Name of the artifact to fetch, eg. 'drop'.
-* **Target Directory**: The directory where to download the artifact. Must be an existing directory. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>.
+* **Compile**: Choose whether to compile a project (defined in a tsconfig.json file) or files.
+* **Path**: Path to a valid <code>tsconfig.json</code> file or directory containing the <code>tsconfig.json</code> file. Variables can be used. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>.
+* **Working Directory**: Root directory that contains .ts files to compile. Variables can be used. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>.
+* **Files**: Files to compile separated by space character (' '). Relative paths to files in subfolders is supported. Variables can be used.
 
 
 ## Having Problems?
-Please [create an issue on our Github](https://github.com/BoolBySigma/FetchBuildArtifact/issues) and we will try to help you.
-
-Icons made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
+Please [create an issue on our Github](https://github.com/BoolBySigma/CompileTypeScript/issues) and we will try to help you.

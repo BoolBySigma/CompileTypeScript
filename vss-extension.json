@@ -14,7 +14,7 @@
         "Build and release"
     ],
     "tags": [
-        "Artifact", "Utility task", "Build", "Continuous Integration"
+        "Build task", "Build", "Continuous Integration", "TypeScript", "Compile"
     ],
     "icons": {
         "default": "icon-128.png",
@@ -27,7 +27,7 @@
     },
     "links": {
         "support": {
-            "uri": "https://github.com/BoolBySigma/FetchBuildArtifact/issues"
+            "uri": "https://github.com/BoolBySigma/CompileTypeScript/issues"
         }
     },
     "files": [

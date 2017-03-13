@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/_suite.js"
+    "test": "echo 'No test defined'"
   },
   "author": "",
   "license": "ISC",
