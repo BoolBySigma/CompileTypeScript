@@ -11,7 +11,7 @@
         "Minor": 0,
         "Patch": 1
     },
-    "instanceNameFormat": "Compile TypeScript: $(compileType)",
+    "instanceNameFormat": "Compile TypeScript",
     "inputs": [
         {
             "name": "compileType",
@@ -48,7 +48,7 @@
             "type": "string",
             "label": "Files",
             "defaultValue": "index.ts",
-            "required": false,
+            "required": true,
             "visibleRule": "compileType=2",
             "helpMarkDown": "Path to a valid <code>tsconfig.json</code> file or directory containing the <code>tsconfig.json</code> file. Leaving it blank defaults to source root directory and is equal to using <code>$(Build.SourcesDirectory)</code>."
         }

@@ -1,52 +1,55 @@
 import * as task from 'vsts-task-lib/task';
 import * as path from 'path';
 
-function installTypeScript(taskPath: string) {
-    let npm = task.tool(task.which('npm', true));
-    npm.arg('install').arg('--prefix').arg(taskPath).arg('typescript');
-    return npm.execSync();
-}
-
-function startCompilation(tsc: string, projectPath: string) {
-    console.log('Starting compilation...');
-    let result = compile(tsc, projectPath);
-    task.debug('tsc exited with code: ' + result.code);
-    if (result.error) {
-        task.debug('tsc exited with error: ' + result.error);
-    }
-    if (result.code === 0) {
-        console.log('Compilation completed');
-    }
-    else {
-        throw new Error('Compilation failed');
-    }
-}
-
-function compile(tsc: string, projectPath: string) {
-    let compiler = task.tool(task.which('node', true));
-    compiler.arg(tsc).arg('-p').arg(projectPath);
-    return compiler.execSync();
-}
-
 async function run() {
     try {
         let compileType = task.getInput('compileType', true);
         let projectPath = task.getPathInput('projectPath', false, false);
+        let filesPath = task.getPathInput('filesPath', false);
+        let files = task.getDelimitedInput('files', ' ', false);
 
-        if (!task.exist(projectPath)){
-            throw new Error('Project path \'' + projectPath + '\' does not exist');
-        }
+        if (compileType === '1') {
+            task.debug('compileType=project');
 
-        let stats = task.stats(projectPath);
-        if (stats.isDirectory()){
-            if (!task.exist(path.join(projectPath, 'tsconfig.json'))){
-                throw new Error('Project path \'' + projectPath + '\' does not contain a tsconfig.json file');
+            task.debug('ensure project path exist');
+            if (!task.exist(projectPath)) {
+                throw new Error('Project path \'' + projectPath + '\' does not exist');
+            }
+
+            let stats = task.stats(projectPath);
+            if (stats.isDirectory()) {
+                task.debug('ensure project path contains tsconfig.json file');
+                if (!task.exist(path.join(projectPath, 'tsconfig.json'))) {
+                    throw new Error('Project path \'' + projectPath + '\' does not contain a tsconfig.json file');
+                }
+            }
+            if (stats.isFile()) {
+                task.debug('ensure project file is a tsconfig.json file');
+                if (!(path.basename(projectPath) === 'tsconfig.json')) {
+                    throw new Error('Project path \'' + projectPath + '\' is not a tsconfig.json file');
+                }
             }
         }
-        if (stats.isFile()){
-            if (!(path.basename(projectPath) === 'tsconfig.json')){
-                throw new Error('Project path \'' + projectPath + '\' is not a tsconfig.json file');
+        else {
+            task.debug('compileType=files');
+
+            task.debug('ensure files path exist');
+            if (!task.exist(filesPath)) {
+                throw new Error('Files path \'' + filesPath + '\' does not exist');
             }
+
+            let stats = task.stats(filesPath);
+            if (stats.isFile()) {
+                task.debug('files path is absolute path to file');
+                task.debug('using file directory as files path');
+                filesPath = path.dirname(filesPath);
+            }
+
+            task.debug('files:');
+            files.forEach(file => {
+                file = path.join(filesPath, file);
+                task.debug(file);
+            });
         }
 
         let tsc = path.join(__dirname, '/node_modules/typescript/lib/tsc.js');
@@ -60,7 +63,14 @@ async function run() {
         if (result.code === 0) {
             if (task.exist(tsc)) {
                 console.log('TypeScript installation completed');
-                startCompilation(tsc, projectPath);
+                console.log('Starting compilation...');
+                if (compileType === '1'){
+                    compileProject(tsc, projectPath);
+                }
+                else{
+                    compileFiles(tsc, files);
+                }
+                console.log('Compilation completed');
             }
             else {
                 task.debug('tsc not found after installation');
@@ -76,6 +86,48 @@ async function run() {
     }
     catch (error) {
         task.setResult(task.TaskResult.Failed, error.message);
+    }
+}
+
+function installTypeScript(taskPath: string) {
+    task.debug('function=installTypeScript');
+
+    let npm = task.tool(task.which('npm', true));
+    npm.arg('install').arg('--prefix').arg(taskPath).arg('typescript');
+    return npm.execSync();
+}
+
+function compileProject(tsc: string, path: string){
+    task.debug('function=compileProject');
+
+    let compiler = task.tool(task.which('node', true));
+    compiler.arg(tsc).arg('-p').arg(path);
+    let result = compiler.execSync();
+
+    task.debug('tsc exited with code: ' + result.code);
+    if (result.error) {
+        task.debug('tsc exited with error: ' + result.error);
+    }
+    if (result.code === 1) {
+        throw new Error('Compilation of project failed');
+    }
+}
+
+function compileFiles(tsc: string, files: string[]){
+    task.debug('function=compileFiles');
+
+    let compiler = task.tool(task.which('node', true));
+    files.forEach(file => {
+        compiler = compiler.arg(file);
+    });
+    let result = compiler.execSync();
+
+    task.debug('tsc exited with code: ' + result.code);
+    if (result.error) {
+        task.debug('tsc exited with error: ' + result.error);
+    }
+    if (result.code === 1) {
+        throw new Error('Compilation of files failed');
     }
 }
 
