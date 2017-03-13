@@ -117,7 +117,7 @@ function compileFiles(tsc: string, filesPath: string, files: string[]){
     task.debug('function=compileFiles');
 
     let compiler = task.tool(task.which('node', true));
-    compiler.arg(tsc);//.arg('--outDir').arg(filesPath);
+    compiler.arg(tsc);
     files.forEach(file => {
         compiler.arg(file);
     });
