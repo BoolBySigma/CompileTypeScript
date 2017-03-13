@@ -46,9 +46,9 @@ async function run() {
             }
 
             task.debug('files:');
-            files.forEach(file => {
-                file = path.join(filesPath, file);
-                task.debug(file);
+            files.forEach((file, index, files) => {
+                files[index] = path.join(filesPath, file);
+                task.debug(files[index]);
             });
         }
 
@@ -117,7 +117,7 @@ function compileFiles(tsc: string, filesPath: string, files: string[]){
     task.debug('function=compileFiles');
 
     let compiler = task.tool(task.which('node', true));
-    compiler.arg(tsc).arg('--outDir').arg(filesPath);
+    compiler.arg(tsc);//.arg('--outDir').arg(filesPath);
     files.forEach(file => {
         compiler.arg(file);
     });
