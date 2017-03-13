@@ -30,6 +30,7 @@ function compile(tsc: string, projectPath: string) {
 
 async function run() {
     try {
+        let compileType = task.getInput('compileType', true);
         let projectPath = task.getPathInput('projectPath', false, false);
 
         if (!task.exist(projectPath)){
