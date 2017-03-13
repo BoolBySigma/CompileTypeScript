@@ -4,7 +4,7 @@ Compile TypeScript projects and files. No more need to locally compile .ts files
 This build task always runs the latest version of TypeScript. No need to install or maintain TypeScript on the build agent.
 
 ## Note
-Make sure to have all your codes dependencies in place by running eg. <code>npm install</code>.
+Make sure to have all your code dependencies in place by running eg. <code>npm install</code>.
 
 ## Usage
 Add a new **Compile TypeScript** task from the **Build** category...
