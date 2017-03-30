@@ -6,7 +6,7 @@
     "publisher": "bool",
     "targets": [
         {
-            "id": "Microsoft.VisualStudio.Services"
+            "id": "Microsoft.VisualStudio.Services.Cloud"
         }
     ],
     "description": "Compile TypeScript projects and files",
