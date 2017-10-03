@@ -26,6 +26,14 @@
             "helpMarkDown": "Choose whether to compile a project (defined in a tsconfig.json file) or files."
         },
         {
+            "name": "typeScriptVersion",
+            "type": "string",
+            "label": "TypeScript Version",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Use a specific version of TypeScript, default is latest."
+        },
+        {
             "name": "projectPath",
             "type": "filePath",
             "label": "Path",
