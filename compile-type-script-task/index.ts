@@ -4,6 +4,7 @@ import * as path from 'path';
 async function run() {
     try {
         let compileType = task.getInput('compileType', true);
+        let typeScriptVersion = task.getInput('typeScriptVersion');
         let projectPath = task.getPathInput('projectPath', false, false);
         let filesPath = task.getPathInput('filesPath', false);
         let files = task.getDelimitedInput('files', ' ', false);
@@ -57,7 +58,7 @@ async function run() {
 
         console.log('Starting TypeScript installation...');
 
-        let result = installTypeScript(__dirname);
+        let result = installTypeScript(__dirname, typeScriptVersion);
         task.debug('npm install typescript exited with code: ' + result.code);
 
         if (result.code === 0) {
@@ -89,11 +90,11 @@ async function run() {
     }
 }
 
-function installTypeScript(taskPath: string) {
+function installTypeScript(taskPath: string, typeScriptVersion: string) {
     task.debug('function=installTypeScript');
 
     let npm = task.tool(task.which('npm', true));
-    npm.arg('install').arg('--prefix').arg(taskPath).arg('typescript');
+    npm.arg('install').arg('--prefix').arg(taskPath).arg('typescript' + (typeScriptVersion ? '@' + typeScriptVersion : ''));
     return npm.execSync();
 }
 
